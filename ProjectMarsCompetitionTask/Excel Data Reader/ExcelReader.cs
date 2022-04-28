@@ -12,11 +12,22 @@ namespace ProjectMarsCompetitionTask.Excel_Data_Reader
 {
     public class ExcelReader
     {
-        
+      static List<Datacollection> dataCol = new List<Datacollection>();  
+        public class Datacollection
+        {
+            public int rowNumber { get; set; }
+            public string colName { get; set; }
+            public string colValue { get; set; }
+        }
+
+        public static void ClearData()
+        {
+            dataCol.Clear();
+        }
+
         //reads the data as excel and return the data as tables.
         public static DataTable ExcelToDataTable(FileStream stream, string sheetName)
         {
-            //open file and returns as stream
             
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             //createopenxmlreader via ExcelReaderFactory
@@ -31,11 +42,8 @@ namespace ProjectMarsCompetitionTask.Excel_Data_Reader
                     UseHeaderRow = true
                 }
             });
-            // excelReader.IsFirstRowAsColumnNames = true;
-            //return as data set
-            //DataSet result1= excelReader.AsDataSet();
-
-            //get all the tables
+            
+            //get all the tables into a datacollection table
             DataTableCollection table = result.Tables;
 
             //store it is data table.
@@ -43,21 +51,53 @@ namespace ProjectMarsCompetitionTask.Excel_Data_Reader
 
             //return
             return resultTable;
-        }    
+        }
+
+        public static string ReadData(int rowNumber, string columnName)
+        {
+            try
+            {
+                //Retriving Data using LINQ to reduce much of iterations
+                
+                string data = (from colData in dataCol
+                               where colData.colName == columnName && colData.rowNumber == rowNumber
+                               select colData.colValue).SingleOrDefault();
+
+               // retrieving data through lambda
+                //var datas = dataCol.Where(x => x.colName == columnName && x.rowNumber == rowNumber).SingleOrDefault().colValue;
+
+
+                return data.ToString();
+            }
+
+            catch (Exception e)
+            {
+                //Added by Kumar
+                Console.WriteLine("Exception occurred in ExcelLib Class ReadData Method!" + Environment.NewLine + e.Message.ToString());
+                return null;
+            }
+        }
 
         public static void ReadDataTable(FileStream stream, string sheetName)
         {
-            Console.WriteLine("Sheet:"+ sheetName);
+           // Console.WriteLine("Sheet:"+ sheetName);
             DataTable table = ExcelToDataTable(stream, sheetName);
             //totalRowCount =table.Rows.Count;
             //Iterate through the rows and columns of the Table
             for (int row = 0; row < table.Rows.Count; row++)
             {
-                Console.WriteLine("Row Number is " + (row + 1));
+                Datacollection data;
+                    
+                //Console.WriteLine("Row Number is " + (row + 1));
                 for (int col = 0; col < table.Columns.Count; col++)
-                {                    
-                    Console.WriteLine("Column:" + table.Columns[col].ColumnName +
-                      " |Value:" + table.Rows[row][col].ToString());
+                {
+                    data = new Datacollection();
+                    data.rowNumber = row + 1;
+                    data.colName= table.Columns[col].ColumnName;
+                    data.colValue = table.Rows[row][col].ToString();
+                    //Console.WriteLine("Column:" + table.Columns[col].ColumnName +
+                    //  " |Value:" + table.Rows[row][col].ToString());
+                    dataCol.Add(data);
                 }
             }
         }       

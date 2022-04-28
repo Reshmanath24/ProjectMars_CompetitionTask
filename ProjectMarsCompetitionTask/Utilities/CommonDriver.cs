@@ -7,6 +7,7 @@ using ProjectMarsCompetitionTask.Excel_Data_Reader;
 using ProjectMarsCompetitionTask.Pages;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,11 +24,17 @@ namespace ProjectMarsCompetitionTask.Utilities
         public static ExtentReports extentreportobj;
         public static ExtentHtmlReporter htmlReporter;
         public static ExtentTest test;
+        public static FileStream stream;
 
         [OneTimeSetUp]
        
         public void LoginFunction()
         {
+
+            string fileName = @"C:\Users\mrudu\Desktop\Reshma\Industry Connect\INTERNSHIP\ExcelReaderDetails.xlsx";
+            //open file and returns as stream
+            stream = File.Open(fileName, FileMode.Open, FileAccess.Read);
+            ExcelReader.ReadDataTable(stream, "LoginSheet");
 
             var htmlreporter = new ExtentHtmlReporter(@"C:\Users\mrudu\Desktop\Reshma\Industry Connect\INTERNSHIP\ProjectMars_CompetitionTask\ProjectMars_CompetitionTaskRepo\ProjectMarsCompetitionTask\ExtentReports\");
             extentreportobj = new ExtentReports();

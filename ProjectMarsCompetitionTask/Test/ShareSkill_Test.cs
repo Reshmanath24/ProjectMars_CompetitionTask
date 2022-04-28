@@ -22,12 +22,9 @@ namespace ProjectMarsCompetitionTask
         public void ExcelReaderMethod()
         {
             try
-            {
-                string fileName = @"C:\Users\mrudu\Desktop\Reshma\Industry Connect\INTERNSHIP\ExcelReaderDetails.xlsx";
-                FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read);
-                ExcelReader.ReadDataTable(stream, "LoginSheet");
-                Console.WriteLine("***************************");
-                ExcelReader.ReadDataTable(stream, "ShareSkill");
+            {           
+                ExcelReader.ClearData();                
+
             }
             catch (Exception e)
             {
@@ -39,7 +36,7 @@ namespace ProjectMarsCompetitionTask
         [Test, Order(2)]
         public void AddSkillPage()
         {
-            
+            ExcelReader.ReadDataTable(stream, "ShareSkill");
             try
             {
                 test = extentreportobj.CreateTest("AddSkillPage", "Testing of add skill page");

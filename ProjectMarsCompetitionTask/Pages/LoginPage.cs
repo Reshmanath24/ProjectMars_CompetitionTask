@@ -29,10 +29,12 @@ namespace ProjectMarsCompetitionTask.Pages
                 signInButton.Click();
                 //Identify the email address text box and enter the valid email address
                 IWebElement emailTextBox = driver.FindElement(By.XPath("/html/body/div[2]/div/div/div[1]/div/div[1]/input"));
-                emailTextBox.SendKeys("reshma.nath24@gmail.com");
+                string userName= ExcelReader.ReadData(1,"UserName");
+                emailTextBox.SendKeys(userName);
                 //Identify the password text box and enter the valid password
                 IWebElement passwordTextBox = driver.FindElement(By.XPath("/html/body/div[2]/div/div/div[1]/div/div[2]/input"));
-                passwordTextBox.SendKeys("Manav24052020");
+                string password = ExcelReader.ReadData(1, "Password");
+                passwordTextBox.SendKeys(password);
                 //Click on sign in button
                 IWebElement loginButton = driver.FindElement(By.XPath("/html/body/div[2]/div/div/div[1]/div/div[4]/button"));
                 loginButton.Click();
