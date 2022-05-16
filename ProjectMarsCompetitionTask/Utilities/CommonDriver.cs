@@ -54,7 +54,7 @@ namespace ProjectMarsCompetitionTask.Utilities
         public void CloseTestRun()
         {
             extentreportobj.Flush();
-            //driver.Quit();
+            driver.Quit();
         }
     }
 }
