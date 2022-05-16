@@ -60,6 +60,7 @@ namespace ProjectMarsCompetitionTask
         public void ViewSkill()
 
         {
+
             test = extentreportobj.CreateTest("ViewSkill", "Testing of view page");
             ViewSkill viewSkillObj = new ViewSkill();
             viewSkillObj.viewSkillsMethod(driver);
